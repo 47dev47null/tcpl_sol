@@ -43,9 +43,12 @@ int obtenirline(char s[], int lim)
             s[j++] = c;
     }
     if (c == '\n')
-      s[j++] = '\n';
+    {
+        if (j < lim - 1)
+            s[j++] = '\n';
+        ++i;
+    }
     s[j] = '\0';
-    
     return i;
 }
 
