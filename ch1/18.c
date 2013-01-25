@@ -53,8 +53,11 @@ void trimline(char line[], int len)
 	int i;
 	for (i = len - 2; line[i] == ' ' || line[i] == '\t'; --i)
 		;
-	line[++i] = line[len - 1];
-	line[++i] = '\0';
-	if (i != 1)		/* not a line full of blanks and tabs */
+
+	line[++i] = (line[len - 1] == '\n') ? '\n' : '\0';
+	if (line[i] == '\n')
+		line[++i] = '\0';
+
+	if (i != 1)		/* not a line with blanks and tabs followed by '\n' */
 		printf("%s", line);
 }
