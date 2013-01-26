@@ -27,6 +27,12 @@ int main(void)
 	while ((len = obtenirline(line, BUFSIZE)) > 0)
 	{
 		p = 0;
+		if (len == 1)	/* reserve paragraph structures */
+		{
+			printf("\n\n");
+			col = 0;
+			continue;
+		}
 		len = discard_newline(line, len);		/* remove original '\n', insert manually */
 		while (len - p >= COLWIDTH - col)
 		{
@@ -42,7 +48,6 @@ int main(void)
 		{
 			putchar(line[p]);
 		}
-
 	}
 
 	return 0;

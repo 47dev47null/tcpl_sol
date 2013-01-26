@@ -3,3 +3,9 @@ shorter lines after the last non-blank character that occurs
  before the n -th column of input. Make sure your program do
 es something intelligent with very long lines, and if there 
 are no blanks or tabs before the specified column.
+
+Write a program to print all input lines that are longer tha
+n 80 characters.
+
+Write a program to remove all trailing blanks and tabs from 
+each line of input, and to delete entirely blank lines.
