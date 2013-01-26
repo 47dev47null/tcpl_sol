@@ -36,13 +36,14 @@ int main(void)
 		len = discard_newline(line, len);		/* remove original '\n', insert manually */
 		while (len - p >= COLWIDTH - col)
 		{
-			for (i = 0; i < COLWIDTH - col; ++i)
-			{
-				putchar(line[p+i]);
-			}
-			putchar('\n');
-			p += COLWIDTH - col;
+			for (i = COLWIDTH - col - 1; i >= 0 && line[p+i] != ' '; --i)
+				;	/* assume no word's length exceeds the COLWIDTH */
+
+			while (i-- >= 0)
+				putchar(line[p++]);
+
 			col = 0;
+			putchar('\n');
 		}
 		for (; p < len; ++p, ++col)
 		{
