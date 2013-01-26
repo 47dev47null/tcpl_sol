@@ -21,7 +21,7 @@ int main(void)
 {
 	int len;
 	char line[BUFSIZE];
-	int i, p, col;
+	int i, j, p, col;
 
 	col = p = 0;
 	while ((len = obtenirline(line, BUFSIZE)) > 0)
@@ -36,9 +36,13 @@ int main(void)
 		len = discard_newline(line, len);		/* remove original '\n', insert manually */
 		while (len - p >= COLWIDTH - col)
 		{
+			/* insert a newline near the COLWIDTH */
+			/* assume there is no word's length exceeds the COLWIDTH */
 			for (i = COLWIDTH - col - 1; i >= 0 && line[p+i] != ' '; --i)
-				;	/* assume no word's length exceeds the COLWIDTH */
-
+				;	/* fold at left */
+			for (j = COLWIDTH - col - 1; j < len - p && line[p+j] != ' '; ++j)
+				;	/* fold at right */
+			i = ((i + j) / 2 > COLWIDTH - col - 1) ? i : j;
 			while (i-- >= 0)
 				putchar(line[p++]);
 
