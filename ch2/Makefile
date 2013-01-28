@@ -1,4 +1,4 @@
-all: 1 2 3 4 5 5b
+all: 1 2 3 4 5 5b 6
 
 1: 1.c
 	gcc 1.c -o 1
@@ -17,3 +17,6 @@ all: 1 2 3 4 5 5b
 
 5b: 5b.c
 	gcc 5b.c -o 5b
+
+6: 6.c
+	gcc 6.c -o 6
