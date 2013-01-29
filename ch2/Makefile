@@ -1,4 +1,4 @@
-all: 1 2 3 4 5 5b 6 7 7b 8 8b
+all: 1 2 3 4 5 5b 6 7 7b 8 8b 9
 
 1: 1.c
 	gcc 1.c -o 1
@@ -32,3 +32,6 @@ all: 1 2 3 4 5 5b 6 7 7b 8 8b
 
 8b: 8b.c
 	gcc 8b.c -o 8b
+
+9: 9.c
+	gcc 9.c -o 9
