@@ -36,6 +36,10 @@ int main(void)
 	itoa(INT_MIN, s);
 	printf("%s\n", s);
 
+	printf("%d\n", -43);
+	itoa(-43, s);
+	printf("%s\n", s);
+
 	return 0;
 }
 
