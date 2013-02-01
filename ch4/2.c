@@ -13,8 +13,22 @@ double atof(char s[]);
 
 int main()
 {
-	char s[] = "123.45e-6";
-	printf("%.10f\n", atof(s));
+	char *strings[] = {
+		"1.0e43",
+		"999.999",
+		"123.456e-9",
+		"-1.2e-3",
+		"1.2e-3",
+		"-1.2E3",
+		"-1.2e03",
+		"cat",
+		"",
+		0
+	};
+	int i;
+
+	for (i = 0; *strings[i]; ++i)
+		printf("atof(%s) = %g\n", strings[i], atof(strings[i]));
 	return 0;
 }
 
