@@ -1,19 +1,21 @@
-/* Exercise 4-4
- * Add commands to print the top element of the stack without popping,
- * to duplicate it, and to swap the top two elements. Add a command to
- * clear the stack.
+/* Exercise 4-5
+ * Add access to library functions like sin, exp, and pow.
+ * See <math.h> in Appendix B, Section 4.
  */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <string.h>
 
 #define MAXOP 100		/* max size of operand or operator */
 #define NUMBER '0'		/* signal that a number was found */
+#define FUNC '1'
 
 int getop(char []);
 void push(double);
 double pop(void);
+void func(char []);
 
 int main(void)
 {
@@ -28,6 +30,9 @@ int main(void)
 		{
 			case NUMBER:
 				push(atof(s));
+				break;
+			case FUNC:
+				func(s);
 				break;
 			case '+':
 				push(pop() + pop());
@@ -116,19 +121,26 @@ void swap(void)
 	}
 }
 
-/* clear: clear the stack */
-void clear(void)
-{
-	sp = 0;
-}
-
-/* dup: duplicate the top element */
-void dup(void)
-{
-	push(top());
-}
-
 #include <ctype.h>
+
+void func(char s[])
+{
+	double op2;
+
+	if (0 == strcmp(s, "sin"))
+		push(sin(pop()));
+	else if (0 == strcmp(s, "cos"))
+		push(cos(pop()));
+	else if (0 == strcmp(s, "exp"))
+		push(exp(pop()));
+	else if (!strcmp(s, "pow"))
+	{
+		op2 = pop();
+		push(pow(pop(), op2));
+	}
+	else
+		printf("%s is not a supported function.\n", s);
+}
 
 int getch(void);
 void ungetch(int);
@@ -142,8 +154,20 @@ int getop(char s[])
 		;
 	s[1] = '\0';
 
-	if (!isdigit(c) && c != '.' && c != '-')
-		return c;		/* not a number but may contain a unary minus */
+	i = 0;
+
+	if (isalpha(c))
+	{
+		while (isalpha(s[++i] = c = getch()))
+			;
+		if (c != EOF)
+			ungetch(c);
+		s[i] = '\0';
+		return FUNC;	/* function call */
+	}
+
+	if (!isdigit(c) && c != '.' && c != '-')	/* not a number but may contain a unary minus */
+		return c;		/* operator exclude minus */	
 
 	if (c == '-')
 	{
@@ -151,24 +175,23 @@ int getop(char s[])
 		if (!isdigit(next) && next != '.')
 		{
 			ungetch(next);
-			return c;
+			return c;	/* minus operator */
 		}
 		c = next;
 	}
 	else
 		c = getch();
 
-	i = 0;
 	while (isdigit(s[++i] = c))
 		c = getch();
 			;
-	if (c == '.')		/* collect fraction part */
+	if (c == '.')	/* collect fraction part */
 		while (isdigit(s[++i] = c = getch()))
 			;
 	s[i] = '\0';
 	if (c != EOF)
 		ungetch(c);
-	return NUMBER;
+	return NUMBER;		/* number */
 }
 
 #define BUFSIZE 100
