@@ -5,6 +5,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 #define MAXOP 100		/* max size of operand or operator */
 #define NUMBER '0'		/* signal that a number was found */
@@ -21,6 +22,7 @@ int main(void)
 
 	while ((type = getop(s)) != EOF)
 	{
+		printf("%s\n", s);
 		switch (type)
 		{
 			case NUMBER:
@@ -46,12 +48,12 @@ int main(void)
 			case '%':
 				op2 = pop();
 				if (op2 != 0.0)
-					push((int)pop() % (int)op2);
+					push(fmod(pop(), op2));
 				else
 					printf("error: zero modulus\n");
 				break;
 			case '\n':
-				printf("\t%.8g\n", pop());
+				printf("result: %.8g\n", pop());
 				break;
 			default:
 				printf("error: unknown command %s\n", s);
@@ -95,16 +97,31 @@ void ungetch(int);
 /* getop: get next character or numeric operand */
 int getop(char s[])
 {
-	int i, c;
+	int i, c, next;
 
 	while (isblank(s[0] = c = getch()))
 		;
 	s[1] = '\0';
-	if (!isdigit(c) && c != '.')
-		return c;		/* not a number */
+
+	if (!isdigit(c) && c != '.' && c != '-')
+		return c;		/* not a number but may contain a unary minus */
+
+	if (c == '-')
+	{
+		next = getch();
+		if (!isdigit(next) && next != '.')
+		{
+			ungetch(next);
+			return c;
+		}
+		c = next;
+	}
+	else
+		c = getch();
+
 	i = 0;
-	if (isdigit(c))		/* collect integer part */
-		while (isdigit(s[++i] = c = getch()))
+	while (isdigit(s[++i] = c))
+		c = getch();
 			;
 	if (c == '.')		/* collect fraction part */
 		while (isdigit(s[++i] = c = getch()))

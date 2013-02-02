@@ -7,4 +7,4 @@ all: 1 2 3
 	gcc 2.c -o 2
 
 3: 3.c
-	gcc 3.c -o 3
+	gcc 3.c -o 3 -lm
