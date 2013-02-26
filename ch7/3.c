@@ -2,6 +2,10 @@
  * Revise minprintf to handle more of the other facilities of printf. 
  */
 
+/* TODO
+ * Support precision and width
+ */
+
 #include <stdarg.h>
 #include <stdio.h>
 
